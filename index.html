@@ -13,6 +13,7 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <!-- <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
     <link type="text/css" rel="stylesheet" href="assets/css/style.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/all.min.css">
     <script>
         let track = new TrackIt();
         $(document).on('click', "#start", function (e) {
@@ -25,9 +26,6 @@
         $(document).on('click', "#controls .cat", function (e) {
             track.addStop($(this).data('cat'));
         });
-            // $(document).on('ready',function(e){
-            //     $('#canvas').width()
-            // });
     </script>
 </head>
 
@@ -37,14 +35,11 @@
         <div id="clock"></div>
         <div id="controls">
             <button id="reset" class="btn btn-icon">reset</button>
-            <button id="start"class="btn btn-icon"> <span class="glyphicon glyphicon-play"></span> </button>
-            <button id="pause"class="btn btn-icon">start</button>
-            <button id="end"class="btn btn-icon">end</button>
+            <button id="start"class="btn btn-icon"><span class="fa fa-play"></span></button>
+            <button id="pause"class="btn btn-icon"><span class="fa fa-pause"></span></button>
+            <button id="end"class="btn btn-icon"><span class="fa fa-stop"></span></button>
             <button id="cat_1" class="btn cat" data-cat="1">cat 1</button>
             <button id="cat_2" class="btn cat" data-cat="2">cat 2</button>
-            <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-              </button>
         </div>
         <div id="log"></div>
         <canvas id="canvas" height="25"></canvas>
