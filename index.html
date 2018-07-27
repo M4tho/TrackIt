@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" type="text/javascript"></script>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <!-- <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="assets/css/style.css">
+    <script>
+        let track = new TrackIt();
+        $(document).on('click', "#start", function (e) {
+            console.log('start');
+            track.start();
+        });
+        $(document).on('click', "#end", function (e) {
+            track.end();
+        });
+        $(document).on('click', "#controls .cat", function (e) {
+            track.addStop($(this).data('cat'));
+        });
+            // $(document).on('ready',function(e){
+            //     $('#canvas').width()
+            // });
+    </script>
+</head>
+
+<body>
+    <header></header>
+    <main>
+        <div id="clock"></div>
+        <div id="controls">
+            <button id="reset" class="btn btn-icon">reset</button>
+            <button id="start"class="btn btn-icon"> <span class="glyphicon glyphicon-play"></span> </button>
+            <button id="pause"class="btn btn-icon">start</button>
+            <button id="end"class="btn btn-icon">end</button>
+            <button id="cat_1" class="btn cat" data-cat="1">cat 1</button>
+            <button id="cat_2" class="btn cat" data-cat="2">cat 2</button>
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+              </button>
+        </div>
+        <div id="log"></div>
+        <canvas id="canvas" height="25"></canvas>
+    </main>
+    <footer></footer>
+</body>
+
+</html>
