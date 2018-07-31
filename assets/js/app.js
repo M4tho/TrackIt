@@ -20,7 +20,7 @@ function TrackIt(options){
     function start(){
         canvas = $('#canvas')[0];
         ctx = canvas.getContext('2d');
-        ctx.canvas.width  = window.innerWidth;
+        ctx.canvas.width  = $('main')[0].clientWidth;
 
         log("start");
         starttime = new Date().getTime();
@@ -41,6 +41,20 @@ function TrackIt(options){
         log("pause");
         clearInterval(clockInterval);
         state = 'PAUSE';
+    }
+
+    function setCategories(number){
+        let s = '<style>';
+        for(let i = 0; i < number; i++){
+            
+            $('#categories').append('<button class="btn cat btn-control" data-cat="'+ i +'">cat ' + (i+1) + '</button>');
+
+            s += '#categories .btn[data-cat="'+i+'"]{background-color: ' + categories[i][0]+'}' + "\n";
+            s += '#categories .btn[data-cat="'+i+'"]:hover, #categories .btn[data-cat="'+i+'"]:active {background-color: ' + categories[i][1]+'}' + "\n";
+        }
+
+        s += '</style>';
+        $('head').append(s);
     }
 
     function addStop(cat){
@@ -93,7 +107,7 @@ function TrackIt(options){
         
         for(let i = stops.length - 1; i >= 0; i--){
             let offset = (now - stops[i].end) * ratio;
-            ctx.fillStyle = ['red','blue','yellow'][stops[i].category];
+            ctx.fillStyle = categories[stops[i].category][0];
             ctx.fillRect(canvas.width - (stops[i].duration * ratio) - offset,0,stops[i].duration * ratio,canvas.height);
         }
     }
@@ -114,11 +128,18 @@ function TrackIt(options){
         $('#log').text($('#log').text() + txt);
     }
 
+    const categories = [
+        ['#6200EA','#651FFF'],
+        ['#E65100','#EF6C00'],
+        ['#1B5E20','#2E7D32'],
+        ['#C51162','#F50057']
+    ];
+
     this.start = start;
     this.end = end;
     this.pause = pause;
     this.addStop = addStop;
-
+    this.setCategories = setCategories;
 
     function Stop(starttime, endtime, cat){
         let _self;

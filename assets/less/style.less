@@ -5,6 +5,22 @@ html, body {
     background-color: #303030;
 }
 
+.container{
+  display: grid;
+  height: 100%;
+  grid-template-rows: 1fr 5fr 1fr;
+  grid-template-columns: 8fr 2fr;
+  grid-template-areas: 
+    "header aside"
+    "main aside"
+    "footer aside";
+}
+
+header{ grid-area: header;}
+main {grid-area: main}
+aside {grid-area: aside}
+footer{grid-area: footer}
+
 
 .btn{
   padding: 5px 8px;
@@ -12,10 +28,27 @@ html, body {
   outline: none;
   background: #424242;
   color: white;
+  cursor: pointer;
+
+  &:hover{background-color: #595959}
+  &:active{background-color: #6200EA;}
+
+  &.btn-control{
+      font-size: 150%;
+      padding: 15px 24px;
+      margin: 0 5px;
+  }
 }
 
 #controls{
   padding: 20px;
+}
+#categories{
+  margin: 5px 10px;
+  .btn{
+    margin: 5px 0;
+    width: 100%;
+  }
 }
 .clock{
   display: inline-block;

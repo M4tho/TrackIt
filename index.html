@@ -16,6 +16,7 @@
     <link type="text/css" rel="stylesheet" href="assets/css/all.min.css">
     <script>
         let track = new TrackIt();
+        
         $(document).on('click', "#start", function (e) {
             console.log('start');
             track.start();
@@ -23,29 +24,40 @@
         $(document).on('click', "#end", function (e) {
             track.end();
         });
-        $(document).on('click', "#controls .cat", function (e) {
+        $(document).on('click', "#categories .cat", function (e) {
             track.addStop($(this).data('cat'));
         });
+
+        $(document).on('ready',(e)=>{
+            track.setCategories(4);
+        });
+
     </script>
 </head>
 
 <body>
-    <header></header>
+    <div class="container">
+    <header>
+            <div id="clock_total" class="clock">0:00:00.00</div>
+            <div id="clock_segment" class="clock">0:00:00.00</div>
+    </header>
     <main>
-        <div id="clock_total" class="clock">0:00:00.00</div>
-        <div id="clock_segment" class="clock">0:00:00.00</div>
-        <div id="controls">
-            <button id="reset" class="btn btn-icon">reset</button>
-            <button id="start"class="btn btn-icon"><span class="fa fa-play"></span></button>
-            <button id="pause"class="btn btn-icon"><span class="fa fa-pause"></span></button>
-            <button id="end"class="btn btn-icon"><span class="fa fa-stop"></span></button>
-            <button id="cat_1" class="btn cat" data-cat="1">cat 1</button>
-            <button id="cat_2" class="btn cat" data-cat="2">cat 2</button>
-        </div>
-        <textarea id="log"></textarea>
         <canvas id="canvas" height="40"></canvas>
+        <textarea id="log" style="display: none"></textarea>
     </main>
-    <footer></footer>
+    <aside>
+        <div id="categories">
+        </div>
+    </aside>
+    <footer>
+            <div id="controls">
+                    <button id="reset" class="btn btn-icon btn-control">reset</button>
+                    <button id="start"class="btn btn-icon btn-control"><span class="fa fa-play"></span></button>
+                    <button id="pause"class="btn btn-icon btn-control"><span class="fa fa-pause"></span></button>
+                    <button id="end"class="btn btn-icon btn-control"><span class="fa fa-stop"></span></button>
+                </div>
+    </footer>
+</div>
 </body>
 
 </html>
