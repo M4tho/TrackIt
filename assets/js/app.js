@@ -8,13 +8,14 @@ function TrackIt(options){
     let state = 'IDLE';
     let stops = [];
 
-    let timeLineLength = 60;
+    const timeLineLength = 60;
+    const timestampInterval = 15;
 
     let clockInterval; 
     let ctx;
     let canvas;
 
-    
+    let ratio;
 
     function start(){
         canvas = $('#canvas')[0];
@@ -23,8 +24,10 @@ function TrackIt(options){
 
         log("start");
         starttime = new Date().getTime();
-        clockInterval = setInterval(updateClock,1000);
+        clockInterval = setInterval(updateClock,100);
         state = 'LIVE';
+
+        ratio = canvas.width / timeLineLength;
         animate();
     }
 
@@ -50,22 +53,43 @@ function TrackIt(options){
     }
 
     function animate(){
-        if(state == 'LIVE')
+        if(state == 'LIVE'){
             requestAnimationFrame(animate);
-        drawTimeLine();
-        drawSegments();
-    }
-    function drawTimeLine(){
-        if(ctx === null ||ctx === undefined)
+        }
+        
+        if(ctx === null ||ctx === undefined){
             return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
         ctx.fillStyle = "darkgrey";
         ctx.fillRect(0,0,canvas.width, canvas.height);
+
+        drawSegments();
+        drawTimeLine();
+    }
+    function drawTimeLine(){
+        //draw timestamps
+        let now = ((new Date().getTime()) - starttime) / 1000;
+        let t = 0;
+        // console.log(now);
+
+        ctx.font = "15px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        for(let t = 0; t < now; t += timestampInterval){
+            let x = canvas.width - (now - t) * ratio;
+
+            ctx.fillText(formatTime(t),x, canvas.height/2);
+            ctx.beginPath();
+            ctx.moveTo(x,0);
+            ctx.lineTo(x,canvas.height);
+            ctx.strokeStyle = '#222222';
+            ctx.stroke();
+        }
     }
 
     function drawSegments(){
-        let ratio = canvas.width / timeLineLength;
-        let now =((new Date().getTime()) - starttime) / 1000;
+        let now = ((new Date().getTime()) - starttime) / 1000;
         
         for(let i = stops.length - 1; i >= 0; i--){
             let offset = (now - stops[i].end) * ratio;
@@ -76,12 +100,12 @@ function TrackIt(options){
 
     function updateClock(){
         let dif = (new Date().getTime()) - starttime;
-        dif = Math.floor(dif/1000);
-        let h = Math.floor(dif / 60 / 60);
-        let m = Math.floor(dif / 60) % 60 + "";
-        let s = dif % 60 + "";
-        let txt = [h,m.padStart(2,"0"),s.padStart(2,"0")].join(":");
-        $('#clock').text(txt);
+        dif = (dif/1000);
+        $('#clock_total').text(formatTime(dif,true));
+
+        let e = stops.length > 0 ? stops[stops.length -1].end : 0;
+        dif -= e;
+        $('#clock_segment').text(formatTime(dif,true));
     }
 
     function log(msg){

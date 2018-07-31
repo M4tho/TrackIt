@@ -32,7 +32,8 @@
 <body>
     <header></header>
     <main>
-        <div id="clock"></div>
+        <div id="clock_total" class="clock">0:00:00.00</div>
+        <div id="clock_segment" class="clock">0:00:00.00</div>
         <div id="controls">
             <button id="reset" class="btn btn-icon">reset</button>
             <button id="start"class="btn btn-icon"><span class="fa fa-play"></span></button>
@@ -41,8 +42,8 @@
             <button id="cat_1" class="btn cat" data-cat="1">cat 1</button>
             <button id="cat_2" class="btn cat" data-cat="2">cat 2</button>
         </div>
-        <div id="log"></div>
-        <canvas id="canvas" height="25"></canvas>
+        <textarea id="log"></textarea>
+        <canvas id="canvas" height="40"></canvas>
     </main>
     <footer></footer>
 </body>
