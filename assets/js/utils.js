@@ -20,5 +20,5 @@ function formatTime(time,millis){
     let h = Math.floor(time / 60 / 60);
     let m = Math.floor(time / 60) % 60 + "";
     let s = (millis ? (time % 60).toFixed(2) : Math.floor((time % 60))) + "";
-    return [h,m.padStart(2,"0"),s.padStart(2,"0")].join(":");
+    return [h,m.padStart(2,"0"),s.padStart(millis ? 5 : 2,"0")].join(":");
 }

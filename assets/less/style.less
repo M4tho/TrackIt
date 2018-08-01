@@ -1,13 +1,25 @@
+@color-bg: #303030;
+@color-fg: #595959;
+@color-txt: #fafafa;
+
 html, body {
     width:  100%;
     height: 100%;
     margin: 0px;
-    background-color: #303030;
+    background-color: @color-bg;
+}
+
+.hidden{
+  display: none !important;
 }
 
 .container{
   display: grid;
   height: 100%;
+  width: 100%;
+}
+
+#vRecord{
   grid-template-rows: 1fr 5fr 1fr;
   grid-template-columns: 8fr 2fr;
   grid-template-areas: 
@@ -16,21 +28,60 @@ html, body {
     "footer aside";
 }
 
-header{ grid-area: header;}
+header{ 
+  grid-area: header;
+  color: @color-txt;
+  font-size: 150%;
+  padding: 10px;
+  .title{
+    padding: 0 10px;
+  }
+  .btn-nav{
+    cursor: pointer;
+  }
+}
 main {grid-area: main}
 aside {grid-area: aside}
 footer{grid-area: footer}
 
+nav{
+  background-color: @color-bg;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid @color-fg;
+  
+  transition: all 0.4s ease-out;
+  transform: translate3d(-100%, 0, 0);
+
+  padding: 10px;
+  color: @color-txt;
+  font-size: 130%;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+
+  &.in{
+    transform: translate3d(0, 0, 0);
+    box-shadow: 2px 0px 2px 0 rgba(0,0,0,0.5);
+  }
+  .nav-item{
+    cursor: pointer;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+
+    .fa{margin-right: 5px}
+  }
+}
 
 .btn{
   padding: 5px 8px;
   border: 0;
   outline: none;
   background: #424242;
-  color: white;
+  color: @color-txt;
   cursor: pointer;
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.5);
 
-  &:hover{background-color: #595959}
+  &:hover{background-color: @color-fg}
   &:active{background-color: #6200EA;}
 
   &.btn-control{
@@ -41,7 +92,7 @@ footer{grid-area: footer}
 }
 
 #controls{
-  padding: 20px;
+  padding: 10px 5px;
 }
 #categories{
   margin: 5px 10px;
@@ -50,9 +101,27 @@ footer{grid-area: footer}
     width: 100%;
   }
 }
+
 .clock{
-  display: inline-block;
-  padding: 10px;
-  background-color: white;
-  font-weight: bold;
+  display: block;
+  position: relative;
+  padding: 17px;
+  margin: 0 5px;
+  float: right;
+  background-color: @color-txt;
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.5);
+
+  .time{
+    font-size: 130%;
+    font-weight: bold;
+  }
+
+  .info{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 75%;
+    color: @color-bg;
+    padding: 2px;
+  }
 }
