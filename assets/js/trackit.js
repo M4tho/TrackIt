@@ -12,9 +12,12 @@ function TrackIt(options){
     const timeLineLength = 60;
     const timestampInterval = 15;
 
-    let clockInterval; 
-    let ctx;
-    let canvas;
+    let clockInterval;
+
+    let canvasCurrent;
+    let ctxCurrent;
+    let canvasTotal;
+    let ctxTotal;
 
     let ratio;
 
@@ -22,9 +25,13 @@ function TrackIt(options){
         if(["IDLE","PAUSE"].indexOf(state) < 0){
             return;
         }
-        canvas = $('#canvas')[0];
-        ctx = canvas.getContext('2d');
-        ctx.canvas.width  = $('main')[0].clientWidth;
+        canvasCurrent = $('canvas#current')[0];
+        ctxCurrent = canvasCurrent.getContext('2d');
+        ctxCurrent.canvas.width  = $('main')[0].clientWidth;
+
+        canvasTotal = $('canvas#total')[0];
+        ctxTotal = canvasTotal.getContext('2d');
+        ctxTotal.canvas.width  = $('main')[0].clientWidth;
 
         log("start");
         if(state != 'PAUSE'){
@@ -35,7 +42,7 @@ function TrackIt(options){
         clockInterval = setInterval(updateClock,100);
         state = 'LIVE';
 
-        ratio = canvas.width / timeLineLength;
+        ratio = canvasCurrent.width / timeLineLength;
         animate();
     }
 
@@ -68,10 +75,9 @@ function TrackIt(options){
         $('#clock_total .time').text(formatTime(0,true));
         $('#clock_segment .time').text(formatTime(0,true));
 
-        if(ctx === null ||ctx === undefined){
-            return;
+        if(ctxCurrent !== null && ctxCurrent !== undefined && ctxTotal !== null && ctxTotal !== undefined){
+            drawClean();
         }
-        drawClean();
     }
 
     function setCategories(number){
@@ -106,18 +112,23 @@ function TrackIt(options){
             requestAnimationFrame(animate);
         }
         
-        if(ctx === null ||ctx === undefined){
+        if(ctxCurrent === null || ctxCurrent === undefined || ctxTotal === null || ctxTotal === undefined){
             return;
         }
 
         drawClean();
         drawSegments();
         drawTimeLine();
+
+        drawTotal();
     }
 
     function drawClean(){
-        ctx.fillStyle = "darkgrey";
-        ctx.fillRect(0,0,canvas.width, canvas.height);
+        ctxCurrent.fillStyle = "darkgrey";
+        ctxCurrent.fillRect(0,0,canvasCurrent.width, canvasCurrent.height);
+
+        ctxTotal.fillStyle = "darkgrey";
+        ctxTotal.fillRect(0,0,canvasTotal.width, canvasTotal.height);
     }
 
     function drawTimeLine(){
@@ -126,18 +137,18 @@ function TrackIt(options){
         let t = 0;
         // console.log(now);
 
-        ctx.font = "15px Arial";
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
+        ctxCurrent.font = "15px Arial";
+        ctxCurrent.fillStyle = "black";
+        ctxCurrent.textAlign = "center";
         for(let t = 0; t < now; t += timestampInterval){
-            let x = canvas.width - (now - t) * ratio;
+            let x = canvasCurrent.width - (now - t) * ratio;
 
-            ctx.fillText(formatTime(t),x, canvas.height/2);
-            ctx.beginPath();
-            ctx.moveTo(x,0);
-            ctx.lineTo(x,canvas.height);
-            ctx.strokeStyle = '#222222';
-            ctx.stroke();
+            ctxCurrent.fillText(formatTime(t),x, canvasCurrent.height/2);
+            ctxCurrent.beginPath();
+            ctxCurrent.moveTo(x,0);
+            ctxCurrent.lineTo(x,canvasCurrent.height);
+            ctxCurrent.strokeStyle = '#222222';
+            ctxCurrent.stroke();
         }
     }
 
@@ -146,9 +157,25 @@ function TrackIt(options){
         
         for(let i = stops.length - 1; i >= 0; i--){
             let offset = (now - stops[i].end) * ratio;
-            ctx.fillStyle = categories[stops[i].category][0];
-            ctx.fillRect(canvas.width - (stops[i].duration * ratio) - offset,0,stops[i].duration * ratio,canvas.height);
+            ctxCurrent.fillStyle = categories[stops[i].category][0];
+            ctxCurrent.fillRect(canvasCurrent.width - (stops[i].duration * ratio) - offset,0,stops[i].duration * ratio,canvasCurrent.height);
         }
+    }
+
+    function drawTotal(){
+        let totalTime = (new Date().getTime()) - starttime;
+        totalTime = (totalTime/1000);
+        let r = canvasTotal.width / totalTime;
+
+        for(let i = 0; i < stops.length; i++){
+            ctxTotal.fillStyle = categories[stops[i].category][0];
+            ctxTotal.fillRect(stops[i].start * r,0,stops[i].duration * r,canvasTotal.height);
+
+            if(i == stops.length -1){
+                console.log(stops[i], stops[i].start * r,stops[i].end * r);
+            }
+        }
+
     }
 
     function updateClock(){
